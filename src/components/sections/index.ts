@@ -1,0 +1,9 @@
+export { Header } from './Header';
+export { Hero } from './Hero';
+export { ClientsRange } from './Ranges/RangeClients';
+export { Solution } from './Solution';
+export { Method } from './Method';
+export { Portfolio } from './Portfolio';
+export { Steps } from './Steps';
+export { Contact } from './Contact';
+export { Footer } from './Footer';
