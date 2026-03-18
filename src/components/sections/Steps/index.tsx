@@ -21,7 +21,7 @@ const stepsData = [
     title: "Briefing e Estudo de Viabilidade",
     description:
       "Realizamos uma reunião técnica para analisar as necessidades da sua operação comercial. Avaliamos o terreno, as exigências do plano diretor e definimos as metas de prazo e orçamento para garantir o melhor retorno sobre o investimento.",
-    image: "/assets/images/sections/step-01.webp",
+    image: "https://picsum.photos/seed/step1/800/600",
   },
   {
     id: 2,
@@ -29,7 +29,7 @@ const stepsData = [
     title: "Projeto Arquitetônico e Engenharia",
     description:
       "Elaboramos os projetos executivos e estruturais específicos para Steel Frame. Diferente da alvenaria, aqui cada perfil de aço é calculado para evitar desperdícios, garantindo uma estrutura leve, resistente e termicamente eficiente.",
-    image: "/assets/images/sections/step-02.webp",
+    image: "https://picsum.photos/seed/step2/800/600",
   },
   {
     id: 3,
@@ -37,7 +37,7 @@ const stepsData = [
     title: "Fabricação e Logística Inteligente",
     description:
       "Enquanto preparamos a fundação, a estrutura de aço galvanizado é fabricada com precisão industrial. Os kits chegam à obra prontos para a montagem, o que reduz drasticamente o entulho e o tempo de mobilização no local.",
-    image: "/assets/images/sections/step-03.webp",
+    image: "https://picsum.photos/seed/step3/800/600",
   },
   {
     id: 4,
@@ -45,7 +45,7 @@ const stepsData = [
     title: "Montagem e Fechamentos",
     description:
       "A estrutura é erguida rapidamente (em dias, não meses). Aplicamos os sistemas de fechamento, junto com o isolamento termoacústico, permitindo que as instalações elétricas e hidráulicas ocorram simultaneamente.",
-    image: "/assets/images/sections/step-04.webp",
+    image: "https://picsum.photos/seed/step4/800/600",
   },
   {
     id: 5,
@@ -53,7 +53,7 @@ const stepsData = [
     title: "Acabamento e Entrega das Chaves",
     description:
       "Finalizamos os revestimentos e detalhes estéticos conforme a identidade da sua marca. Entregamos uma obra limpa, sustentável e com alto padrão de acabamento, permitindo que sua empresa comece a operar em tempo recorde.",
-    image: "/assets/images/sections/step-05.webp",
+    image: "https://picsum.photos/seed/step5/800/600",
   },
 ];
 
