@@ -15,7 +15,7 @@ export const projects: Project[] = [
     year: '2025',
     logo: '/assets/images/logos/smartfit.svg',
     mainImage: '/assets/images/backgrounds/teste.jpg',
-    gallery: [],
+    gallery: ['/assets/images/backgrounds/teste.jpg', '/assets/images/backgrounds/teste-2.jpg', '/assets/images/backgrounds/teste-3.jpg'],
     location: 'Belo Horizonte, MG',
   },
   {
@@ -23,8 +23,8 @@ export const projects: Project[] = [
     name: 'SESC Rio de Janeiro',
     year: '2024',
     logo: '/assets/images/logos/sesc.svg',
-    mainImage: '/assets/images/backgrounds/teste.jpg',
-    gallery: [],
+    mainImage: '/assets/images/backgrounds/teste-2.jpg',
+    gallery: ['/assets/images/backgrounds/teste-2.jpg', '/assets/images/backgrounds/teste.jpg', '/assets/images/backgrounds/teste-3.jpg'],
     location: 'Rio de Janeiro, RJ',
   },
   {
@@ -32,8 +32,8 @@ export const projects: Project[] = [
     name: 'Localiza São Paulo',
     year: '2024',
     logo: '/assets/images/logos/localiza.svg',
-    mainImage: '/assets/images/backgrounds/teste.jpg',
-    gallery: [],
+    mainImage: '/assets/images/backgrounds/teste-3.jpg',
+    gallery: ['/assets/images/backgrounds/teste-3.jpg', '/assets/images/backgrounds/teste.jpg', '/assets/images/backgrounds/teste-2.jpg'],
     location: 'São Paulo, SP',
   },
   {
@@ -41,8 +41,8 @@ export const projects: Project[] = [
     name: 'Maple Bear Curitiba',
     year: '2023',
     logo: '/assets/images/logos/maplebear.svg',
-    mainImage: '/assets/images/projects/maple-bear-curitiba/main.jpg',
-    gallery: [],
+    mainImage: '/assets/images/backgrounds/teste-2.jpg',
+    gallery: ['/assets/images/backgrounds/teste-2.jpg', '/assets/images/backgrounds/teste-3.jpg', '/assets/images/backgrounds/teste.jpg'],
     location: 'Curitiba, PR',
   },
   {
@@ -51,7 +51,7 @@ export const projects: Project[] = [
     year: '2023',
     logo: '/assets/images/logos/smartfit.svg',
     mainImage: '/assets/images/projects/smart-fit-campinas/main.jpg',
-    gallery: [],
+    gallery: ['/assets/images/backgrounds/teste.jpg', '/assets/images/backgrounds/teste-2.jpg', '/assets/images/backgrounds/teste-3.jpg'],
     location: 'Campinas, SP',
   },
   {
@@ -60,7 +60,7 @@ export const projects: Project[] = [
     year: '2022',
     logo: '/assets/images/logos/sesc.svg',
     mainImage: '/assets/images/projects/sesc-brasilia/main.jpg',
-    gallery: [],
+    gallery: ['/assets/images/backgrounds/teste-3.jpg', '/assets/images/backgrounds/teste.jpg', '/assets/images/backgrounds/teste-2.jpg'],
     location: 'Brasília, DF',
   },
 ];

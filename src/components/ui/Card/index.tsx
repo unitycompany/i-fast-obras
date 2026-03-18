@@ -220,7 +220,7 @@ export default function Card({
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: card,
-                    start: 'top 85%',
+                    start: 'top 90%',
                     toggleActions: 'play none none none',
                 },
             });
@@ -228,7 +228,7 @@ export default function Card({
             // Image fade in
             tl.to(imageWrapper, {
                 opacity: 1,
-                duration: 1.4,
+                duration: 0.6,
                 ease: 'power2.out',
             });
 
@@ -237,9 +237,9 @@ export default function Card({
                 tl.to(normasEl, {
                     opacity: 1,
                     clipPath: 'inset(0 0% 0 0)',
-                    duration: 0.8,
+                    duration: 0.4,
                     ease: 'power3.inOut',
-                }, '-=1');
+                }, '-=0.5');
             }
 
             // Title: per-character blur + fade reveal
@@ -247,10 +247,10 @@ export default function Card({
                 tl.to(chars, {
                     opacity: 1,
                     filter: 'blur(0px)',
-                    duration: 0.6,
-                    stagger: 0.02,
+                    duration: 0.3,
+                    stagger: 0.015,
                     ease: 'power2.out',
-                }, '-=0.6');
+                }, '-=0.3');
             }
 
             // Description: reveal top down
@@ -258,9 +258,9 @@ export default function Card({
                 tl.to(descEl, {
                     opacity: 1,
                     clipPath: 'inset(0% 0 0 0)',
-                    duration: 0.9,
+                    duration: 0.4,
                     ease: 'power3.out',
-                }, '-=0.4');
+                }, '-=0.2');
             }
 
             // Button: smooth wipe from left + fade
@@ -268,9 +268,9 @@ export default function Card({
                 tl.to(btnEl, {
                     opacity: 1,
                     clipPath: 'inset(0 0% 0 0)',
-                    duration: 0.5,
+                    duration: 0.3,
                     ease: 'power4.out',
-                }, '-=0.5');
+                }, '-=0.3');
             }
         }, card);
 
