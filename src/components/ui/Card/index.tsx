@@ -38,7 +38,7 @@ const CardContainer = styled.div<{ variant: CardVariant, theme: any }>`
         height: ${({ variant }) => variant === "featured" ? "100%" : "100%"};
         scale: ${({ variant }) => variant === "featured" ? "1.4" : "1"};
         right: ${({ variant }) => variant === "featured" ? "0%" : "50%"};
-        top: ${({ variant }) => variant === "featured" ? "0%" : "-15%"};
+        top: ${({ variant }) => variant === "featured" ? "0" : "-15%"};
         transform: ${({ variant }) => variant === "featured" ? "translate(0, 0)" : "translateX(50%)"};
         flex-shrink: 0;
         position: absolute;
