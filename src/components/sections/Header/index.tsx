@@ -389,6 +389,14 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [isOpen]);
 
+  const scrollToSection = (id: string) => {
+    const el = document.querySelector(id);
+    if (!el) return;
+    const headerHeight = headerRef.current?.offsetHeight || 0;
+    const top = el.getBoundingClientRect().top + window.scrollY - headerHeight;
+    window.scrollTo({ top, behavior: 'smooth' });
+  };
+
   const navigateTo = (href: string, index: number) => {
     const li = navItemsRef.current[index];
     if (!li) return;
@@ -398,9 +406,16 @@ export function Header() {
     const inner = li.querySelector('.text-reveal__inner') as HTMLElement;
     const clone = li.querySelector('.text-reveal__clone') as HTMLElement;
 
+    const isAnchor = href.startsWith('#');
+
     const tl = gsap.timeline({
       onComplete: () => {
-        navigateWithTransition(href);
+        if (isAnchor) {
+          toggle();
+          setTimeout(() => scrollToSection(href), 600);
+        } else {
+          navigateWithTransition(href);
+        }
       }
     });
 
@@ -505,29 +520,28 @@ export function Header() {
     {
       id: 1,
       name: 'Início',
-      href: '/'
+      href: '#inicio'
     },
     {
       id: 2,
-      name: 'Serviços',
-      href: '/servicos'
+      name: 'Método',
+      href: '#metodo'
     },
     {
-      id: 1,
-      name: 'Sobre nós',
-      href: '/sobre-nos'
-    },
-    {
-      id: 1,
+      id: 3,
       name: 'Portfólio',
-      href: '/portfolio'
+      href: '#portfolio'
     },
     {
-      id: 1,
-      name: 'Contato',
-      href: '/contato'
+      id: 4,
+      name: 'Etapas',
+      href: '#etapas'
     },
-
+    {
+      id: 5,
+      name: 'Contato',
+      href: '#contato'
+    },
   ]
 
   return <>
@@ -552,7 +566,7 @@ export function Header() {
             width={180}
             height={40}
             placeholder="empty"
-            onClick={() => window.open('/', '_self')}
+            onClick={() => scrollToSection('#inicio')}
           />
         </div>
         <div ref={logoWhiteRef} className="header__image header__image--white">
@@ -562,11 +576,11 @@ export function Header() {
             width={180}
             height={40}
             placeholder="empty"
-            onClick={() => window.open('/', '_self')}
+            onClick={() => scrollToSection('#inicio')}
           />
         </div>
       </div>
-      <button className="header__button-contact" ref={contactBtnRef}>
+      <button className="header__button-contact" ref={contactBtnRef} onClick={() => scrollToSection('#contato')}>
         <TextReveal className="header__contact-text">
           <Text as="span">Solicitar orçamento</Text>
         </TextReveal>

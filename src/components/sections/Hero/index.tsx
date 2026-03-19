@@ -164,12 +164,12 @@ export function Hero() {
     return () => ctx.revert();
   }, []);
 
-  return <HeroContainer ref={sectionRef} theme={theme}>
+  return <HeroContainer ref={sectionRef} theme={theme} id="inicio">
     <div className="hero__pinned">
     <div className="hero__container">
         <div className="hero__video-wrapper">
           <VideoBackground 
-            src="/assets/videos/hero-video.mp4"
+            src="/assets/videos/footer-video.mp4"
             style={{ position: 'absolute', inset: 0 }}
           />
         </div>

@@ -617,7 +617,7 @@ export function Portfolio() {
   const galleryImages = galleryProject ? [galleryProject.mainImage, ...galleryProject.gallery] : [];
 
   return <>
-    <PortfolioContainer theme={theme}>
+    <PortfolioContainer theme={theme} id="portfolio">
       <main className="portfolio__container">
         <article className="portfolio__container-texts">
           <div className="portfolio__container-texts-header">

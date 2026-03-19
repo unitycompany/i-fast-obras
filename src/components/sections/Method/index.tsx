@@ -168,7 +168,7 @@ export function Method() {
     },
   ]
 
-  return <MethodContainer theme={theme}>
+  return <MethodContainer theme={theme} id="metodo">
     <main className="method__container">
       <article className="method__container-texts">
         <Badge 

@@ -373,7 +373,7 @@ export function Footer() {
     return () => observer.disconnect();
   }, []);
 
-  return <FooterContainer theme={theme}>
+  return <FooterContainer theme={theme} id="footer">
     <div className="footer__container">
       <VideoBackground 
         src="/assets/videos/footer-video.mp4"

@@ -523,7 +523,7 @@ export function Steps() {
   }, []);
 
   return (
-    <StepsContainer theme={theme} ref={sectionRef}>
+    <StepsContainer theme={theme} ref={sectionRef} id="etapas">
       <main className="step__container">
         <article className="step__container-texts">
           <Badge
