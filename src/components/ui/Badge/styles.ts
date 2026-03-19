@@ -28,6 +28,7 @@ const variants = {
 
 export const StyledBadge = styled.span<{ variant: BadgeVariant }>`
   display: inline-flex;
+  width: max-content;
   align-items: center;
   gap: 8px;
   padding: 6px 12px 6px 10px;

@@ -78,7 +78,7 @@ const StepsContainer = styled.section`
     gap: 96px;
 
     @media (max-width: 768px) {
-      padding: 72px 24px 24px 24px;
+      padding: 72px 24px 48px 24px;
       gap: 48px;
     }
 
@@ -238,7 +238,7 @@ const StickyImageWrapper = styled.div`
   }
 
   .step__sticky-note {
-    margin-top: 16px;
+    margin-top: 24px;
     font-size: 14px;
     color: ${props => props.theme.colors.gray[400]};
     font-family: ${props => props.theme.fonts.primary};
