@@ -267,9 +267,38 @@ function formatWhatsApp(value: string): string {
   return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
 }
 
+function getUTMParams() {
+  if (typeof window === 'undefined') return {};
+  const params = new URLSearchParams(window.location.search);
+  return {
+    utm_source: params.get('utm_source') || '',
+    utm_medium: params.get('utm_medium') || '',
+    utm_campaign: params.get('utm_campaign') || '',
+    utm_content: params.get('utm_content') || '',
+    utm_term: params.get('utm_term') || '',
+    gclid: params.get('gclid') || '',
+    fbclid: params.get('fbclid') || '',
+  };
+}
+
+function formatPhoneE164(raw: string): string {
+  const digits = raw.replace(/\D/g, '');
+  if (digits.length === 0) return '';
+  if (digits.startsWith('55')) return `+${digits}`;
+  return `+55${digits}`;
+}
+
+function formatDateBR(date: Date): string {
+  const d = date.toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric' });
+  const t = date.toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+  return `${d} - ${t}`;
+}
+
 export function Contact() {
   const [consent, setConsent] = useState(false);
   const [whatsapp, setWhatsapp] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   function handleWhatsAppChange(e: ChangeEvent<HTMLInputElement>) {
@@ -346,25 +375,64 @@ export function Contact() {
     return () => ctx.revert();
   }, []);
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!consent) return;
+    if (!consent || isSubmitting) return;
 
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    setIsSubmitting(true);
+
+    const formData = new FormData(form);
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
+    const phoneRaw = (formData.get("whatsapp") as string).replace(/\D/g, '');
+    const phoneE164 = formatPhoneE164(phoneRaw);
+    const now = new Date();
+    const utmParams = getUTMParams();
+    const currentPageUrl = typeof window !== 'undefined' ? window.location.href : '';
 
-    const message = encodeURIComponent(
-      `Olá! Meu nome é ${name}, meu e-mail é ${email}. Gostaria de saber mais sobre os serviços da Fast Obras.`
-    );
-    const phone = "5500000000000";
-    window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
+    const payload = {
+      form_name: "Fast Obras",
+      site: "fastobras.com.br",
+      name,
+      email,
+      phone_raw: phoneRaw,
+      phone_e164: phoneE164,
+      page_url: currentPageUrl,
+      submitted_at_iso: now.toISOString(),
+      submitted_at_br: formatDateBR(now),
+      utm_source: utmParams.utm_source,
+      utm_medium: utmParams.utm_medium,
+      utm_campaign: utmParams.utm_campaign,
+      utm_content: utmParams.utm_content,
+      utm_term: utmParams.utm_term,
+      gclid: utmParams.gclid,
+      fbclid: utmParams.fbclid,
+      currentPageUrl,
+    };
+
+    try {
+      const res = await fetch('https://n8n.unitycompany.com.br/webhook/fastsistemas/formularios-dos-sites', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error('Webhook error');
+      setSubmitted(true);
+      form.reset();
+      setWhatsapp('');
+      setConsent(false);
+    } catch {
+      alert('Erro ao enviar formulário. Tente novamente.');
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
     <ContactContainer ref={sectionRef} theme={theme} id="contato">
       <div className="contact__container">
-        <form className="contact__container-form" onSubmit={handleSubmit}>
+        <form id="contactForm" className="contact__container-form" onSubmit={handleSubmit}>
           <div className="contact__container-form-texts">
             <Badge
               variant="dark"
@@ -372,13 +440,18 @@ export function Contact() {
               label="Fale conosco"
             />
             <Text as="h2" className="contact__container-form-texts-title">
-              Tire seu <strong>projeto</strong> do papel, entre em contato agora
+              {submitted
+                ? "Obrigado pelo contato! Retornaremos em breve."
+                : <>Tire seu <strong>projeto</strong> do papel, entre em contato agora</>}
             </Text>
           </div>
 
+          {!submitted && (
+          <>
           <div className="contact__container-form-fields">
             <div className="contact__container-form-input">
               <input
+                id="name"
                 type="text"
                 name="name"
                 placeholder="Qual o seu nome?"
@@ -388,6 +461,7 @@ export function Contact() {
             </div>
             <div className="contact__container-form-input">
               <input
+                id="email"
                 type="email"
                 name="email"
                 placeholder="Digite seu melhor e-mail"
@@ -397,6 +471,7 @@ export function Contact() {
             </div>
             <div className="contact__container-form-input">
               <input
+                id="tel"
                 type="tel"
                 name="whatsapp"
                 placeholder="Por fim, seu WhatsApp"
@@ -437,10 +512,12 @@ export function Contact() {
           <button
             type="submit"
             className="contact__container-form-submit"
-            disabled={!consent}
+            disabled={!consent || isSubmitting}
           >
-            <TextReveal>Enviar formulário</TextReveal>
+            <TextReveal>{isSubmitting ? 'Enviando...' : 'Enviar formulário'}</TextReveal>
           </button>
+          </>
+          )}
         </form>
 
         <div className="contact__container-image">

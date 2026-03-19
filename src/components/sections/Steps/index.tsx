@@ -10,9 +10,6 @@ import { Text } from "@/components/ui";
 import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import { CrosshairIcon } from "@phosphor-icons/react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const stepsData = [
   {
@@ -381,144 +378,145 @@ export function Steps() {
   const timelineFillRef = useRef<HTMLDivElement>(null);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const revealedRef = useRef<Set<number>>(new Set());
 
+  // Step activation via IntersectionObserver (replaces ScrollTrigger)
   useEffect(() => {
-    if (!stepsListRef.current || !timelineFillRef.current || !timelineTrackRef.current) return;
+    const steps = stepRefs.current.filter(Boolean) as HTMLDivElement[];
+    if (steps.length === 0) return;
 
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const idx = steps.indexOf(entry.target as HTMLDivElement);
+          if (idx !== -1) setActiveIndex(idx);
+        });
+      },
+      { rootMargin: '-50% 0px -50% 0px', threshold: 0 }
+    );
+
+    steps.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  // Step reveal animations via IntersectionObserver (replaces ScrollTrigger scrub)
+  useEffect(() => {
+    const steps = stepRefs.current.filter(Boolean) as HTMLDivElement[];
+    if (steps.length === 0) return;
+
+    // Set initial hidden state
+    steps.forEach((stepEl) => {
+      const dot = stepEl.querySelector('.step__item-dot');
+      const label = stepEl.querySelector('.step__item-label');
+      const title = stepEl.querySelector('.step__item-title');
+      const desc = stepEl.querySelector('.step__item-description');
+
+      gsap.set([dot, label, title, desc].filter(Boolean), {
+        opacity: 0,
+        y: 40,
+        filter: 'blur(8px)',
+      });
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const idx = steps.indexOf(entry.target as HTMLDivElement);
+          if (idx === -1 || revealedRef.current.has(idx)) return;
+
+          revealedRef.current.add(idx);
+          const stepEl = entry.target;
+          const dot = stepEl.querySelector('.step__item-dot');
+          const label = stepEl.querySelector('.step__item-label');
+          const title = stepEl.querySelector('.step__item-title');
+          const desc = stepEl.querySelector('.step__item-description');
+
+          const tl = gsap.timeline();
+
+          tl.to(dot, {
+            opacity: 1, y: 0, filter: 'blur(0px)',
+            duration: 0.4, ease: 'power2.out',
+          }, 0);
+          tl.to(label, {
+            opacity: 1, y: 0, filter: 'blur(0px)',
+            duration: 0.45, ease: 'power2.out',
+          }, 0.08);
+          tl.to(title, {
+            opacity: 1, y: 0, filter: 'blur(0px)',
+            duration: 0.5, ease: 'power2.out',
+          }, 0.18);
+          tl.to(desc, {
+            opacity: 1, y: 0, filter: 'blur(0px)',
+            duration: 0.55, ease: 'power2.out',
+          }, 0.28);
+        });
+      },
+      { rootMargin: '0px 0px -15% 0px', threshold: 0.1 }
+    );
+
+    steps.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  // Timeline track + fill: unified scroll handler recalculates both each frame
+  useEffect(() => {
     const listEl = stepsListRef.current;
-    const trackEl = timelineTrackRef.current;
     const fillEl = timelineFillRef.current;
+    const trackEl = timelineTrackRef.current;
+    if (!listEl || !fillEl || !trackEl) return;
 
-    // Position the track line to span only from first dot to last dot
-    const positionTrack = () => {
+    fillEl.style.height = '0px';
+    let rafId: number;
+
+    const update = () => {
       const firstDot = stepRefs.current[0]?.querySelector('.step__item-dot');
       const lastDot = stepRefs.current[stepRefs.current.length - 1]?.querySelector('.step__item-dot');
       if (!firstDot || !lastDot) return;
 
       const listRect = listEl.getBoundingClientRect();
-      const firstDotCenter = firstDot.getBoundingClientRect().top + firstDot.getBoundingClientRect().height / 2 - listRect.top;
-      const lastDotCenter = lastDot.getBoundingClientRect().top + lastDot.getBoundingClientRect().height / 2 - listRect.top;
+      const firstDotRect = firstDot.getBoundingClientRect();
+      const lastDotRect = lastDot.getBoundingClientRect();
 
-      trackEl.style.top = `${firstDotCenter}px`;
+      const firstDotCenter = firstDotRect.top + firstDotRect.height / 2;
+      const lastDotCenter = lastDotRect.top + lastDotRect.height / 2;
+      const firstDotRel = firstDotCenter - listRect.top;
+      const lastDotRel = lastDotCenter - listRect.top;
+      const totalHeight = lastDotRel - firstDotRel;
+
+      // Always keep track aligned with dots
+      trackEl.style.top = `${firstDotRel}px`;
       trackEl.style.bottom = 'auto';
-      trackEl.style.height = `${lastDotCenter - firstDotCenter}px`;
+      trackEl.style.height = `${totalHeight}px`;
+
+      // Fill progress: 0 at first dot center, 1 at last dot center (relative to viewport mid)
+      const viewportMid = window.innerHeight / 2;
+      const progress = Math.min(1, Math.max(0,
+        (viewportMid - firstDotCenter) / (lastDotCenter - firstDotCenter)
+      ));
+
+      fillEl.style.top = `${firstDotRel}px`;
+      fillEl.style.height = `${totalHeight * progress}px`;
     };
 
-    positionTrack();
-
-    const ctx = gsap.context(() => {
-      // Step active index detection
-      stepRefs.current.forEach((stepEl, i) => {
-        if (!stepEl) return;
-
-        ScrollTrigger.create({
-          trigger: stepEl,
-          start: "top 50%",
-          end: "bottom 50%",
-          onEnter: () => setActiveIndex(i),
-          onEnterBack: () => setActiveIndex(i),
-        });
-      });
-
-      // Step reveal animations — scroll-driven
-      stepRefs.current.forEach((stepEl) => {
-        if (!stepEl) return;
-
-        const dot = stepEl.querySelector('.step__item-dot');
-        const label = stepEl.querySelector('.step__item-label');
-        const title = stepEl.querySelector('.step__item-title');
-        const desc = stepEl.querySelector('.step__item-description');
-
-        gsap.set([dot, label, title, desc].filter(Boolean), {
-          opacity: 0,
-          y: 40,
-          filter: 'blur(8px)',
-        });
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: stepEl,
-            start: 'top 85%',
-            end: 'top 55%',
-            scrub: 0.4,
-          },
-        });
-
-        tl.to(dot, {
-          opacity: 1,
-          y: 0,
-          filter: 'blur(0px)',
-          duration: 0.2,
-          ease: 'none',
-        }, 0);
-
-        tl.to(label, {
-          opacity: 1,
-          y: 0,
-          filter: 'blur(0px)',
-          duration: 0.25,
-          ease: 'none',
-        }, 0.05);
-
-        tl.to(title, {
-          opacity: 1,
-          y: 0,
-          filter: 'blur(0px)',
-          duration: 0.3,
-          ease: 'none',
-        }, 0.15);
-
-        tl.to(desc, {
-          opacity: 1,
-          y: 0,
-          filter: 'blur(0px)',
-          duration: 0.35,
-          ease: 'none',
-        }, 0.25);
-      });
-
-      // Timeline fill animation
-      const lastStep = stepRefs.current[stepRefs.current.length - 1];
-      if (lastStep) {
-        ScrollTrigger.create({
-          trigger: listEl,
-          start: "top 50%",
-          end: () => {
-            const lastDot = lastStep.querySelector('.step__item-dot');
-            if (!lastDot) return `bottom 50%`;
-            const listRect = listEl.getBoundingClientRect();
-            const dotCenter = lastDot.getBoundingClientRect().top + lastDot.getBoundingClientRect().height / 2 - listRect.top;
-            return `top+=${dotCenter} 50%`;
-          },
-          scrub: 0.3,
-          onUpdate: (self) => {
-            if (!fillEl) return;
-            const firstDot = stepRefs.current[0]?.querySelector('.step__item-dot');
-            const lastDot = lastStep.querySelector('.step__item-dot');
-            if (!firstDot || !lastDot) return;
-
-            const listRect = listEl.getBoundingClientRect();
-            const firstDotCenter = firstDot.getBoundingClientRect().top + firstDot.getBoundingClientRect().height / 2 - listRect.top;
-            const lastDotCenter = lastDot.getBoundingClientRect().top + lastDot.getBoundingClientRect().height / 2 - listRect.top;
-            const totalHeight = lastDotCenter - firstDotCenter;
-
-            fillEl.style.top = `${firstDotCenter}px`;
-            fillEl.style.height = `${totalHeight * self.progress}px`;
-          },
-        });
-      }
-    }, sectionRef);
-
-    // Recalculate track on resize
-    const onResize = () => {
-      positionTrack();
-      ScrollTrigger.refresh();
+    const onScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(update);
     };
-    window.addEventListener('resize', onResize);
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+
+    // Double-rAF ensures layout is fully stable (after Portfolio pin spacers, etc.)
+    requestAnimationFrame(() => {
+      requestAnimationFrame(update);
+    });
 
     return () => {
-      ctx.revert();
-      window.removeEventListener('resize', onResize);
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
     };
   }, []);
 

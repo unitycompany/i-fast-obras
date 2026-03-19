@@ -10,9 +10,13 @@ import { projects, Project } from "@/data/projects";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+
+gsap.registerPlugin(ScrollTrigger);
+
+import { Navigation, EffectCreative } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import "swiper/css/effect-creative";
 
 const INITIAL_VISIBLE = 4;
 
@@ -145,11 +149,12 @@ const PortfolioContainer = styled.section`
 
         &-cursor {
           position: fixed;
-          width: 96px;
-          height: 96px;
+          width: 80px;
+          height: 80px;
           border-radius: 50%;
           background: rgba(255, 255, 255, 0.95);
-          backdrop-filter: blur(4px);
+          backdrop-filter: blur(8px);
+          box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -157,15 +162,16 @@ const PortfolioContainer = styled.section`
           z-index: 9999;
           opacity: 0;
           transform: scale(0);
-          box-shadow: 0 0px 40px rgba(0, 0, 0, 0.15);
 
           span {
-            font-size: 16px;
+            font-size: 11px;
             font-weight: 600;
-            color: ${props => props.theme.colors.gray[700]};
+            color: ${props => props.theme.colors.black};
             font-family: ${props => props.theme.fonts.primary};
-            letter-spacing: -0.06em;
+            letter-spacing: 0.02em;
             text-transform: uppercase;
+            text-align: center;
+            line-height: 120%;
           }
 
           @media (max-width: 768px) {
@@ -184,7 +190,7 @@ const PortfolioContainer = styled.section`
           align-items: flex-end;
           justify-content: center;
           will-change: transform, clip-path;
-          cursor: none;
+          cursor: pointer;
 
           @media (max-width: 768px) {
             cursor: pointer;
@@ -276,13 +282,13 @@ const GalleryOverlay = styled.div`
   position: fixed;
   inset: 0;
   z-index: 10000;
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(0, 0, 0, 0);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  opacity: 0;
   pointer-events: none;
+  clip-path: inset(100% 0 0 0);
 
   &.active {
     pointer-events: all;
@@ -302,11 +308,14 @@ const GalleryOverlay = styled.div`
     justify-content: center;
     cursor: pointer;
     color: white;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, transform 0.3s ease;
     z-index: 2;
+    opacity: 0;
+    transform: rotate(-90deg);
 
     &:hover {
       border-color: rgba(255, 255, 255, 0.6);
+      transform: rotate(0deg);
     }
 
     @media (max-width: 768px) {
@@ -324,6 +333,8 @@ const GalleryOverlay = styled.div`
     display: flex;
     flex-direction: column;
     gap: 4px;
+    opacity: 0;
+    transform: translateY(-20px);
 
     @media (max-width: 768px) {
       top: 16px;
@@ -357,6 +368,8 @@ const GalleryOverlay = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    opacity: 0;
+    transform: scale(0.92);
 
     @media (max-width: 768px) {
       max-width: 100%;
@@ -368,6 +381,7 @@ const GalleryOverlay = styled.div`
       width: 100%;
       height: 100%;
       cursor: grab;
+      overflow: visible;
 
       &:active {
         cursor: grabbing;
@@ -378,6 +392,8 @@ const GalleryOverlay = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
+      border-radius: 12px;
     }
 
     .swiper-button-prev,
@@ -388,10 +404,13 @@ const GalleryOverlay = styled.div`
     &-image {
       max-width: 100%;
       max-height: 100%;
-      object-fit: contain;
-      border-radius: 8px;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
       user-select: none;
       -webkit-user-drag: none;
+      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
   }
 
@@ -401,6 +420,7 @@ const GalleryOverlay = styled.div`
     color: rgba(255, 255, 255, 0.5);
     font-family: ${props => props.theme.fonts.primary};
     letter-spacing: 0.05em;
+    opacity: 0;
   }
 
   .gallery__nav {
@@ -408,6 +428,8 @@ const GalleryOverlay = styled.div`
     align-items: center;
     gap: 24px;
     margin-top: 24px;
+    opacity: 0;
+    transform: translateY(20px);
 
     &-btn {
       width: 48px;
@@ -460,9 +482,9 @@ export function Portfolio() {
 
     const onMove = (e: MouseEvent) => {
       gsap.to(cursor, {
-        x: e.clientX - 48,
-        y: e.clientY - 48,
-        duration: 0.5,
+        x: e.clientX - 40,
+        y: e.clientY - 40,
+        duration: 1.2,
         ease: "power3.out",
       });
     };
@@ -507,33 +529,110 @@ export function Portfolio() {
   const openGallery = useCallback((project: Project) => {
     const images = [project.mainImage, ...project.gallery];
     if (images.length === 0) return;
+
+    // Lock body scroll to prevent portfolio cards from shifting behind the overlay
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+
     setGalleryProject(project);
     setGalleryIndex(0);
-
-    gsap.to(galleryRef.current, {
-      opacity: 1,
-      duration: 0.5,
-      ease: "power2.out",
-    });
   }, []);
+
+  // Animate gallery in after React renders the content
+  useEffect(() => {
+    if (!galleryProject) return;
+
+    const overlay = galleryRef.current;
+    if (!overlay) return;
+
+    // Wait one frame so the DOM is fully rendered
+    const rafId = requestAnimationFrame(() => {
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+      tl.to(overlay, {
+        clipPath: "inset(0% 0 0 0)",
+        duration: 0.7,
+        ease: "power3.inOut",
+      })
+        .to(overlay, {
+          background: "rgba(0, 0, 0, 0.95)",
+          duration: 0.4,
+        }, 0.2)
+        .to(overlay.querySelector(".gallery__content"), {
+          opacity: 1,
+          scale: 1,
+          duration: 0.6,
+        }, 0.35)
+        .to(overlay.querySelector(".gallery__header"), {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+        }, 0.45)
+        .to(overlay.querySelector(".gallery__close"), {
+          opacity: 1,
+          rotate: 0,
+          duration: 0.4,
+        }, 0.5)
+        .to(overlay.querySelector(".gallery__counter"), {
+          opacity: 1,
+          duration: 0.4,
+        }, 0.55)
+        .to(overlay.querySelector(".gallery__nav"), {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+        }, 0.55);
+    });
+
+    return () => cancelAnimationFrame(rafId);
+  }, [galleryProject]);
 
   // Close gallery
   const closeGallery = useCallback(() => {
-    gsap.to(galleryRef.current, {
-      opacity: 0,
-      duration: 0.4,
-      ease: "power2.in",
+    const overlay = galleryRef.current;
+    if (!overlay) return;
+
+    const tl = gsap.timeline({
+      defaults: { ease: "power3.in" },
       onComplete: () => {
         setGalleryProject(null);
         setGalleryIndex(0);
+        gsap.set(overlay, { clipPath: "inset(100% 0 0 0)", background: "rgba(0, 0, 0, 0)" });
+
+        // Unlock body scroll
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
       },
     });
+
+    tl.to(overlay.querySelectorAll(".gallery__nav, .gallery__counter"), {
+      opacity: 0,
+      y: 10,
+      duration: 0.25,
+    })
+      .to(overlay.querySelectorAll(".gallery__header, .gallery__close"), {
+        opacity: 0,
+        duration: 0.25,
+      }, 0.05)
+      .to(overlay.querySelector(".gallery__content"), {
+        opacity: 0,
+        scale: 0.92,
+        duration: 0.35,
+      }, 0.1)
+      .to(overlay, {
+        background: "rgba(0, 0, 0, 0)",
+        duration: 0.3,
+      }, 0.25)
+      .to(overlay, {
+        clipPath: "inset(0% 0 100% 0)",
+        duration: 0.5,
+        ease: "power3.inOut",
+      }, 0.3);
   }, []);
 
   // Scroll-triggered card animation
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
     if (!gridRef.current) return;
 
     const items = itemsRef.current.filter(Boolean);
@@ -643,7 +742,7 @@ export function Portfolio() {
         </article>
         <div ref={gridRef} className="portfolio__container-grid">
           <div ref={cursorRef} className="portfolio__container-grid-cursor">
-            <span>Ver mais</span>
+            <span>Clique<br />aqui</span>
           </div>
           <div className="portfolio__container-grid-wrapper">
             {visibleProjects.map((project, index) => {
@@ -701,9 +800,23 @@ export function Portfolio() {
           </div>
           <div className="gallery__content">
             <Swiper
-              modules={[Navigation]}
+              modules={[Navigation, EffectCreative]}
               grabCursor
-              spaceBetween={0}
+              effect="creative"
+              creativeEffect={{
+                prev: {
+                  translate: ["-120%", 0, -300],
+                  rotate: [0, 0, -5],
+                  opacity: 0,
+                },
+                next: {
+                  translate: ["120%", 0, -300],
+                  rotate: [0, 0, 5],
+                  opacity: 0,
+                },
+              }}
+              speed={600}
+              spaceBetween={24}
               slidesPerView={1}
               initialSlide={galleryIndex}
               onSwiper={(swiper) => { swiperRef.current = swiper; }}
