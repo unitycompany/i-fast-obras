@@ -3,6 +3,11 @@ import { PolicyLayout } from '@/components/PolicyLayout';
 
 export const metadata: Metadata = {
   title: 'Política de Privacidade',
+  description:
+    'Política de Privacidade da Fast Obras. Saiba como coletamos, usamos e protegemos seus dados pessoais em conformidade com a LGPD.',
+  alternates: {
+    canonical: 'https://fastobras.com.br/politica-de-privacidade',
+  },
 };
 
 export default function PrivacyPolicyPage() {

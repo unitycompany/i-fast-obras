@@ -1,0 +1,17 @@
+{
+  "name": "Fast Obras",
+  "short_name": "Fast Obras",
+  "description": "Construção comercial de alta performance em Steel Frame. Obras de grande porte entregues em tempo recorde.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1D1D1B",
+  "theme_color": "#F4B41F",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "/assets/images/logos/icon-fast-obras-black.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

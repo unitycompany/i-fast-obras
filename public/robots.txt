@@ -1,0 +1,10 @@
+# Fast Obras — Construção Comercial em Steel Frame
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://fastobras.com.br/sitemap.xml
+
+# Crawl-delay
+User-agent: *
+Crawl-delay: 1

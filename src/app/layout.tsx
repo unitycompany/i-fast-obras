@@ -84,7 +84,7 @@ export const metadata: Metadata = {
       'Obras comerciais de grande porte com Steel Frame. Velocidade de entrega que transforma prazos — do conceito à operação com método e precisão.',
     images: [
       {
-        url: '/opengraph-image.png',
+        url: '/opengraph-image.jpg',
         width: 1200,
         height: 630,
         alt: 'Fast Obras — Construção Comercial em Steel Frame',
@@ -97,11 +97,17 @@ export const metadata: Metadata = {
     title: 'Fast Obras | Construção Comercial em Steel Frame',
     description:
       'Obras comerciais de grande porte entregues em tempo recorde. Steel Frame com método, velocidade e precisão.',
-    images: ['/opengraph-image.png'],
+    images: ['/opengraph-image.jpg'],
   },
 
   alternates: {
     canonical: SITE_URL,
+  },
+
+  other: {
+    'geo.region': 'BR',
+    'geo.placename': 'Brasil',
+    'content-language': 'pt-BR',
   },
 
   category: 'construction',
@@ -115,6 +121,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#F4B41F" />
+        <link rel="apple-touch-icon" href="/assets/images/logos/icon-fast-obras-black.svg" />
         <Script
           id="gtm-script"
           strategy="afterInteractive"

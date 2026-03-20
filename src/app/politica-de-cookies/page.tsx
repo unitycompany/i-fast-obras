@@ -3,6 +3,11 @@ import { PolicyLayout } from '@/components/PolicyLayout';
 
 export const metadata: Metadata = {
   title: 'Política de Cookies',
+  description:
+    'Política de Cookies da Fast Obras. Entenda quais cookies utilizamos, para que servem e como você pode gerenciá-los.',
+  alternates: {
+    canonical: 'https://fastobras.com.br/politica-de-cookies',
+  },
 };
 
 export default function CookiePolicyPage() {

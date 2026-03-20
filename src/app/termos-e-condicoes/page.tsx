@@ -3,6 +3,11 @@ import { PolicyLayout } from '@/components/PolicyLayout';
 
 export const metadata: Metadata = {
   title: 'Termos e Condições',
+  description:
+    'Termos e Condições de Uso do site Fast Obras. Conheça as regras de utilização dos nossos serviços e conteúdos.',
+  alternates: {
+    canonical: 'https://fastobras.com.br/termos-e-condicoes',
+  },
 };
 
 export default function TermsAndConditionsPage() {
