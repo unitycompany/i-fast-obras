@@ -164,7 +164,7 @@ export function Hero() {
     return () => ctx.revert();
   }, []);
 
-  return <HeroContainer ref={sectionRef} theme={theme} id="inicio">
+  return <HeroContainer ref={sectionRef} theme={theme} id="inicio" aria-label="Seção principal">
     <div className="hero__pinned">
     <div className="hero__container">
         <div className="hero__video-wrapper">

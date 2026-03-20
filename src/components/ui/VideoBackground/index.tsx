@@ -56,6 +56,7 @@ export function VideoBackground({
         playsInline
         preload="metadata"
         poster={poster}
+        aria-hidden="true"
         style={{
           position: 'absolute',
           top: '50%',

@@ -515,7 +515,7 @@ export function Solution() {
 
   return <SolutionContainer ref={sectionRef} theme={theme} id="solucao">
     <ClientsRange />
-    <main className="solution__container">
+    <div className="solution__container">
       <div className="solution__container-grid">
         <div className="solution__container-grid-item solution__container-grid-item--1">
 
@@ -534,7 +534,7 @@ export function Solution() {
 
         <div className="solution__container-grid-item solution__container-grid-item--4">
           <div className="problem__card">
-            <div className="problem__card-icon-float">
+            <div className="problem__card-icon-float" aria-hidden="true">
               <XIcon weight="light" />
             </div>
             <Text as='h2' className="problem__card-title">
@@ -545,7 +545,7 @@ export function Solution() {
             </Text>
           </div>
           <div className="problem__card">
-            <div className="problem__card-icon-float">
+            <div className="problem__card-icon-float" aria-hidden="true">
               <XIcon weight="light" />
             </div>
             <Text as='h2' className="problem__card-title">
@@ -556,7 +556,7 @@ export function Solution() {
             </Text>
           </div>
           <div className="problem__card">
-            <div className="problem__card-icon-float">
+            <div className="problem__card-icon-float" aria-hidden="true">
               <XIcon weight="light" />
             </div>
             <Text as='h2' className="problem__card-title">
@@ -567,7 +567,7 @@ export function Solution() {
             </Text>
           </div>
           <div className="problem__card">
-            <div className="problem__card-icon-float">
+            <div className="problem__card-icon-float" aria-hidden="true">
               <XIcon weight="light" />
             </div>
             <Text as='h2' className="problem__card-title">
@@ -590,7 +590,7 @@ export function Solution() {
 
         <div className="solution__container-grid-item solution__container-grid-item--6">
           <div className="problem__card">
-            <div className="problem__card-icon-float">
+            <div className="problem__card-icon-float" aria-hidden="true">
               <CheckIcon weight="light" />
             </div>
             <Text as='h2' className="problem__card-title">
@@ -601,7 +601,7 @@ export function Solution() {
             </Text>
           </div>
           <div className="problem__card">
-            <div className="problem__card-icon-float">
+            <div className="problem__card-icon-float" aria-hidden="true">
               <CheckIcon weight="light" />
             </div>
             <Text as='h2' className="problem__card-title">
@@ -612,7 +612,7 @@ export function Solution() {
             </Text>
           </div>
           <div className="problem__card">
-            <div className="problem__card-icon-float">
+            <div className="problem__card-icon-float" aria-hidden="true">
               <CheckIcon weight="light" />
             </div>
             <Text as='h2' className="problem__card-title">
@@ -623,7 +623,7 @@ export function Solution() {
             </Text>
           </div>
           <div className="problem__card">
-            <div className="problem__card-icon-float">
+            <div className="problem__card-icon-float" aria-hidden="true">
               <CheckIcon weight="light" />
             </div>
             <Text as='h2' className="problem__card-title">
@@ -635,19 +635,19 @@ export function Solution() {
           </div>
         </div>
 
-        <div className="solution__container-grid-item solution__container-grid-item--7">
+        <div className="solution__container-grid-item solution__container-grid-item--7" aria-hidden="true">
           <ArrowRightIcon weight="light" />
         </div>
 
         <div className="solution__container-grid-item solution__container-grid-item--8" />
 
-        <div className="solution__container-grid-item solution__container-grid-item--9 text-reveal-trigger" onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}>
+        <div className="solution__container-grid-item solution__container-grid-item--9 text-reveal-trigger" role="button" tabIndex={0} onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' }); } }} aria-label="Solucionar meu problema - ir para contato">
           <TextReveal>Solucionar meu problema</TextReveal>
-          <ArrowRightIcon weight="light" />
+          <ArrowRightIcon weight="light" aria-hidden="true" />
         </div>
 
       </div>
-    </main>
+    </div>
     <RangeQualitys />
   </SolutionContainer>;
 }

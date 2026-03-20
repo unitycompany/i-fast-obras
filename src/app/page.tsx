@@ -209,7 +209,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
       <Header />
-      <main>
+      <main id="main-content">
         <Hero />
         <ClientsRange />
         <Solution />

@@ -7,21 +7,21 @@ import '@/styles/global.css';
 
 const instrumentSans = Instrument_Sans({
   variable: '--font-instrument-sans',
-  subsets: ['latin'],
+  subsets: ['latin', 'latin-ext'],
   weight: ['400', '500', '600', '700'],
   display: 'swap',
 });
 
 const lora = Lora({
   variable: '--font-lora',
-  subsets: ['latin'],
+  subsets: ['latin', 'latin-ext'],
   weight: ['400', '500', '600', '700'],
   display: 'swap',
 });
 
 const chakraPetch = Chakra_Petch({
   variable: '--font-chakra-petch',
-  subsets: ['latin'],
+  subsets: ['latin', 'latin-ext'],
   weight: ['400', '500', '600', '700'],
   display: 'swap',
 });
@@ -144,9 +144,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             src="https://www.googletagmanager.com/ns.html?id=GTM-T6HRSNMW"
             height="0"
             width="0"
+            title="Google Tag Manager"
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
+        <a href="#main-content" className="skip-to-content">Pular para o conteúdo principal</a>
         <PageTransitionProvider>
           <SmoothScroll>{children}</SmoothScroll>
         </PageTransitionProvider>

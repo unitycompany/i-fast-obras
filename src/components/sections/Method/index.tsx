@@ -169,7 +169,7 @@ export function Method() {
   ]
 
   return <MethodContainer theme={theme} id="metodo">
-    <main className="method__container">
+    <div className="method__container">
       <article className="method__container-texts">
         <Badge 
           variant="dark"
@@ -204,6 +204,6 @@ export function Method() {
             ))
           }
       </div>
-    </main> 
+    </div> 
   </MethodContainer>;
 }

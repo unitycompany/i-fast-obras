@@ -19,7 +19,7 @@ export function Button({
   return (
     <StyledButton variant={variant} {...rest}>
       {children}
-      <ArrowRightIcon weight="regular" />
+      <ArrowRightIcon weight="regular" aria-hidden="true" />
     </StyledButton>
   );
 }

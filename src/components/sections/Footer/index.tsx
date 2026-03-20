@@ -380,7 +380,7 @@ export function Footer() {
     return () => observer.disconnect();
   }, []);
 
-  return <FooterContainer theme={theme} id="footer">
+  return <FooterContainer theme={theme} id="footer" aria-label="Rodapé">
     <div className="footer__container">
       <VideoBackground 
         src="/assets/videos/footer-video.mp4"
@@ -404,17 +404,17 @@ export function Footer() {
         </div>
       </article>
     </div>
-    <main className="footer__content" ref={contentRef}>
-        <div className="footer__content-options"> 
+    <div className="footer__content" ref={contentRef} role="contentinfo">
+        <nav className="footer__content-options" aria-label="Links do rodapé"> 
           <ol className="footer__content-options-list" ref={(el) => { if (el) listsRef.current[0] = el; }}>
             <Text as="h6" className="footer__content-options-list-title">Serviços</Text>
-            <li onClick={() => scrollToSection('#metodo')}><TextReveal><Text as="span" className="footer__content-options-list-item">Construção Comercial</Text></TextReveal></li>
-            <li onClick={() => scrollToSection('#metodo')}><TextReveal><Text as="span" className="footer__content-options-list-item">Projeto Comercial</Text></TextReveal></li>
+            <li role="button" tabIndex={0} onClick={() => scrollToSection('#metodo')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToSection('#metodo'); } }}><TextReveal><Text as="span" className="footer__content-options-list-item">Construção Comercial</Text></TextReveal></li>
+            <li role="button" tabIndex={0} onClick={() => scrollToSection('#metodo')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToSection('#metodo'); } }}><TextReveal><Text as="span" className="footer__content-options-list-item">Projeto Comercial</Text></TextReveal></li>
           </ol>
           <ol className="footer__content-options-list" ref={(el) => { if (el) listsRef.current[1] = el; }}>
             <Text as="h6" className="footer__content-options-list-title">Mapa do site</Text>
             {siteMap.map((item) => (
-              <li key={item.href} onClick={() => scrollToSection(item.href)} style={{ cursor: 'pointer' }}>
+              <li key={item.href} role="button" tabIndex={0} onClick={() => scrollToSection(item.href)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToSection(item.href); } }} style={{ cursor: 'pointer' }}>
                 <TextReveal>
                   <Text
                     as="span"
@@ -431,44 +431,44 @@ export function Footer() {
             <li><TextReveal><a href="tel:+5524992882282" style={{ textDecoration: 'none', color: 'inherit' }}><Text as="span" className="footer__content-options-list-item">+55 (24) 99288-2282</Text></a></TextReveal></li>
             <li><TextReveal><a href="https://wa.me/5524992882282" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}><Text as="span" className="footer__content-options-list-item">WhatsApp</Text></a></TextReveal></li>
             <li><TextReveal><a href="https://instagram.com/fastobrasbr" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}><Text as="span" className="footer__content-options-list-item">Instagram</Text></a></TextReveal></li>
-            <li onClick={() => scrollToSection('#contato')} style={{ cursor: 'pointer' }}><TextReveal><Text as="span" className="footer__content-options-list-item">E-mail</Text></TextReveal></li>
+            <li role="button" tabIndex={0} onClick={() => scrollToSection('#contato')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToSection('#contato'); } }} style={{ cursor: 'pointer' }}><TextReveal><Text as="span" className="footer__content-options-list-item">E-mail</Text></TextReveal></li>
           </ol> 
           <ol className="footer__content-options-list" ref={(el) => { if (el) listsRef.current[3] = el; }}>
             <Text as="h6" className="footer__content-options-list-title">Localização</Text>
             <li><TextReveal><Text as="span" className="footer__content-options-list-item">Avenida Roberto Silveira, 251 - Centro, Miguel Pereira - RJ, CEP 26900-000</Text></TextReveal></li>
           </ol>
-        </div>
+        </nav>
         <div className="footer__content-policies" ref={policiesRef}>
           <article className="footer__content-policies-infos">
             <Text as="span" className="footer__content-policies-infos-copyright">
               <strong>© 2026 Fast Obras.</strong> Todos os direitos reservados.
             </Text>
-            <ul className="footer__content-policies-infos-links">
-              <li onClick={() => navigateWithTransition('/politica-de-privacidade')} style={{ cursor: 'pointer' }}><TextReveal><Text as="span" className="footer__content-policies-infos-links-link">Política de Privacidade</Text></TextReveal></li>
-              <li onClick={() => navigateWithTransition('/termos-e-condicoes')} style={{ cursor: 'pointer' }}><TextReveal><Text as="span" className="footer__content-policies-infos-links-link">Termos de Uso</Text></TextReveal></li>
-              <li onClick={() => navigateWithTransition('/politica-de-cookies')} style={{ cursor: 'pointer' }}><TextReveal><Text as="span" className="footer__content-policies-infos-links-link">Cookies</Text></TextReveal></li>
+            <ul className="footer__content-policies-infos-links" role="list">
+              <li role="button" tabIndex={0} onClick={() => navigateWithTransition('/politica-de-privacidade')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigateWithTransition('/politica-de-privacidade'); } }} style={{ cursor: 'pointer' }}><TextReveal><Text as="span" className="footer__content-policies-infos-links-link">Política de Privacidade</Text></TextReveal></li>
+              <li role="button" tabIndex={0} onClick={() => navigateWithTransition('/termos-e-condicoes')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigateWithTransition('/termos-e-condicoes'); } }} style={{ cursor: 'pointer' }}><TextReveal><Text as="span" className="footer__content-policies-infos-links-link">Termos de Uso</Text></TextReveal></li>
+              <li role="button" tabIndex={0} onClick={() => navigateWithTransition('/politica-de-cookies')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigateWithTransition('/politica-de-cookies'); } }} style={{ cursor: 'pointer' }}><TextReveal><Text as="span" className="footer__content-policies-infos-links-link">Cookies</Text></TextReveal></li>
             </ul>
           </article>
           <div className="footer__content-policies-socials">
             <ul className="footer__content-policies-socials-links">
               <li className="footer__content-policies-socials-links-link">
-                <a href="https://instagram.com/fastobras" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', display: 'flex' }}>
-                  <InstagramLogoIcon weight="light" />
+                <a href="https://instagram.com/fastobras" target="_blank" rel="noopener noreferrer" aria-label="Visite nosso Instagram" style={{ color: 'inherit', display: 'flex' }}>
+                  <InstagramLogoIcon weight="light" aria-hidden="true" />
                 </a>
               </li>
               <li className="footer__content-policies-socials-links-link">
-                <a href="https://facebook.com/fastobras" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', display: 'flex' }}>
-                  <FacebookLogoIcon weight="light" />
+                <a href="https://facebook.com/fastobras" target="_blank" rel="noopener noreferrer" aria-label="Visite nosso Facebook" style={{ color: 'inherit', display: 'flex' }}>
+                  <FacebookLogoIcon weight="light" aria-hidden="true" />
                 </a>
               </li>
               <li className="footer__content-policies-socials-links-link">
-                <a href="https://wa.me/5524992882282" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', display: 'flex' }}>
-                  <WhatsappLogoIcon weight="light" />
+                <a href="https://wa.me/5524992882282" target="_blank" rel="noopener noreferrer" aria-label="Fale conosco pelo WhatsApp" style={{ color: 'inherit', display: 'flex' }}>
+                  <WhatsappLogoIcon weight="light" aria-hidden="true" />
                 </a>
               </li>
             </ul>
           </div>
         </div>
-    </main>
+    </div>
   </FooterContainer>;
 }

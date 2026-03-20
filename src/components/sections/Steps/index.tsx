@@ -522,7 +522,7 @@ export function Steps() {
 
   return (
     <StepsContainer theme={theme} ref={sectionRef} id="etapas">
-      <main className="step__container">
+      <div className="step__container">
         <article className="step__container-texts">
           <Badge
             variant="dark"
@@ -575,7 +575,7 @@ export function Steps() {
                 ref={(el) => { stepRefs.current[i] = el; }}
                 theme={theme}
               >
-                <span className={`step__item-dot${i <= activeIndex ? " active" : ""}`} />
+                <span className={`step__item-dot${i <= activeIndex ? " active" : ""}`} aria-hidden="true" />
                 <span className="step__item-label">
                   {step.label}
                 </span>
@@ -590,7 +590,7 @@ export function Steps() {
             </StepCTA>
           </StepsList>
         </div>
-      </main>
+      </div>
     </StepsContainer>
   );
 }

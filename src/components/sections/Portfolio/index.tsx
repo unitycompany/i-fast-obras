@@ -717,7 +717,7 @@ export function Portfolio() {
 
   return <>
     <PortfolioContainer theme={theme} id="portfolio">
-      <main className="portfolio__container">
+      <div className="portfolio__container">
         <article className="portfolio__container-texts">
           <div className="portfolio__container-texts-header">
             <Badge 
@@ -754,6 +754,10 @@ export function Portfolio() {
                   ref={(el) => setItemRef(el, index)}
                   className={`portfolio__container-grid-item${isLastBeforeMore ? " portfolio__container-grid-item--last" : ""}`}
                   onClick={() => openGallery(project)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openGallery(project); } }}
+                  aria-label={`Ver galeria do projeto ${project.name}`}
                 >
                   <img
                     src={project.mainImage}
@@ -781,18 +785,21 @@ export function Portfolio() {
             })}
           </div>
         </div>
-      </main>
+      </div>
     </PortfolioContainer>
 
     <GalleryOverlay
       ref={galleryRef}
       theme={theme}
       className={galleryProject ? "active" : ""}
+      role="dialog"
+      aria-modal="true"
+      aria-label={galleryProject ? `Galeria de fotos: ${galleryProject.name}` : 'Galeria de fotos'}
     >
       {galleryProject && (
         <>
-          <button className="gallery__close" onClick={closeGallery}>
-            <X size={20} weight="bold" />
+          <button className="gallery__close" onClick={closeGallery} aria-label="Fechar galeria">
+            <X size={20} weight="bold" aria-hidden="true" />
           </button>
           <div className="gallery__header">
             <span className="gallery__header-name">{galleryProject.name}</span>
@@ -839,8 +846,9 @@ export function Portfolio() {
                 className="gallery__nav-btn"
                 disabled={galleryIndex === 0}
                 onClick={() => swiperRef.current?.slidePrev()}
+                aria-label="Foto anterior"
               >
-                <ArrowLeft size={20} weight="bold" />
+                <ArrowLeft size={20} weight="bold" aria-hidden="true" />
               </button>
               <span className="gallery__counter">
                 {galleryIndex + 1} / {galleryImages.length}
@@ -849,8 +857,9 @@ export function Portfolio() {
                 className="gallery__nav-btn"
                 disabled={galleryIndex === galleryImages.length - 1}
                 onClick={() => swiperRef.current?.slideNext()}
+                aria-label="Próxima foto"
               >
-                <ArrowRight size={20} weight="bold" />
+                <ArrowRight size={20} weight="bold" aria-hidden="true" />
               </button>
             </div>
           )}

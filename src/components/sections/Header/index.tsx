@@ -547,8 +547,8 @@ export function Header() {
   return <>
     <HeaderContainer theme={theme} ref={headerRef}>
       <div className="header__inner">
-      <button className="header__button-menu" onClick={toggle}>
-        <MenuIcon width="18" height="16" viewBox="0 0 18 16" fill="none">
+      <button className="header__button-menu" onClick={toggle} aria-label={isOpen ? 'Fechar menu' : 'Abrir menu'} aria-expanded={isOpen}>
+        <MenuIcon width="18" height="16" viewBox="0 0 18 16" fill="none" aria-hidden="true">
           <line ref={line1Ref} className="menu-line" x1="0" y1="2" x2="18" y2="2" />
           <line ref={line2Ref} className="menu-line" x1="0" y1="8" x2="18" y2="8" />
           <line ref={line3Ref} className="menu-line" x1="0" y1="14" x2="18" y2="14" />
@@ -558,7 +558,7 @@ export function Header() {
           <Text as="span" ref={fecharTextRef}>Fechar</Text>
         </span>
       </button>
-      <div className="header__logo-wrapper">
+      <div className="header__logo-wrapper" role="button" tabIndex={0} onClick={() => scrollToSection('#inicio')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToSection('#inicio'); } }} aria-label="Fast Obras - Ir para o início">
         <div ref={logoBlackRef} className="header__image header__image--black">
           <OptimizedImage
             src="/assets/images/logos/logo-fast-obras-black.svg"
@@ -566,7 +566,6 @@ export function Header() {
             width={180}
             height={40}
             placeholder="empty"
-            onClick={() => scrollToSection('#inicio')}
           />
         </div>
         <div ref={logoWhiteRef} className="header__image header__image--white">
@@ -576,35 +575,36 @@ export function Header() {
             width={180}
             height={40}
             placeholder="empty"
-            onClick={() => scrollToSection('#inicio')}
           />
         </div>
       </div>
-      <button className="header__button-contact" ref={contactBtnRef} onClick={() => scrollToSection('#contato')}>
+      <button className="header__button-contact" ref={contactBtnRef} onClick={() => scrollToSection('#contato')} aria-label="Solicitar orçamento">
         <TextReveal className="header__contact-text">
           <Text as="span">Solicitar orçamento</Text>
         </TextReveal>
-        <ArrowRight width={16} height={16} />
+        <ArrowRight width={16} height={16} aria-hidden="true" />
       </button>
       </div>
     </HeaderContainer>
-    <Sidebar ref={sidebarRef} theme={theme}>
+    <Sidebar ref={sidebarRef} theme={theme} role="dialog" aria-label="Menu de navegação">
+      <nav aria-label="Navegação principal">
       <ul className="sidebar__nav">
         {
           nav.map((i, item) => (
-            <li className="sidebar__nav-item" key={item} ref={(el) => { if (el) navItemsRef.current[item] = el; }} onClick={() => navigateTo(i.href, item)}>
+            <li className="sidebar__nav-item" key={item} role="button" tabIndex={0} ref={(el) => { if (el) navItemsRef.current[item] = el; }} onClick={() => navigateTo(i.href, item)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigateTo(i.href, item); } }}>
               <TextReveal>
                 <Text as='span'>
                   {i.name}
                 </Text>
               </TextReveal>
-              <span className="sidebar__nav-arrow">
+              <span className="sidebar__nav-arrow" aria-hidden="true">
                 <ArrowRight />
               </span>
             </li>
           ))
         }
       </ul>
+      </nav>
       <div className="sidebar__container" ref={bottomContainerRef}>
           <div className="sidebar__container-adress">
             <Text as="p" className="sidebar__container-adress-text">

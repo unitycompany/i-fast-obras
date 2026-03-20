@@ -12,7 +12,7 @@ interface BadgeProps {
 export function Badge({ icon, label, variant = 'light' }: BadgeProps) {
   return (
     <StyledBadge variant={variant}>
-      {icon}
+      <span aria-hidden="true">{icon}</span>
       {label}
     </StyledBadge>
   );

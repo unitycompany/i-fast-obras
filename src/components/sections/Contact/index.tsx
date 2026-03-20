@@ -430,9 +430,9 @@ export function Contact() {
   }
 
   return (
-    <ContactContainer ref={sectionRef} theme={theme} id="contato">
+    <ContactContainer ref={sectionRef} theme={theme} id="contato" aria-label="Formulário de contato">
       <div className="contact__container">
-        <form id="contactForm" className="contact__container-form" onSubmit={handleSubmit}>
+        <form id="contactForm" className="contact__container-form" onSubmit={handleSubmit} aria-label="Solicitar orçamento">
           <div className="contact__container-form-texts">
             <Badge
               variant="dark"
@@ -448,28 +448,35 @@ export function Contact() {
 
           {!submitted && (
           <>
-          <div className="contact__container-form-fields">
+          <div className="contact__container-form-fields" role="group" aria-label="Dados de contato">
             <div className="contact__container-form-input">
+              <label htmlFor="name" className="sr-only">Qual o seu nome?</label>
               <input
                 id="name"
                 type="text"
                 name="name"
                 placeholder="Qual o seu nome?"
                 required
+                aria-required="true"
+                autoComplete="name"
               />
-              <UserIcon weight="regular" />
+              <UserIcon weight="regular" aria-hidden="true" />
             </div>
             <div className="contact__container-form-input">
+              <label htmlFor="email" className="sr-only">Digite seu melhor e-mail</label>
               <input
                 id="email"
                 type="email"
                 name="email"
                 placeholder="Digite seu melhor e-mail"
                 required
+                aria-required="true"
+                autoComplete="email"
               />
-              <EnvelopeSimpleIcon weight="regular" />
+              <EnvelopeSimpleIcon weight="regular" aria-hidden="true" />
             </div>
             <div className="contact__container-form-input">
+              <label htmlFor="tel" className="sr-only">Seu WhatsApp</label>
               <input
                 id="tel"
                 type="tel"
@@ -478,8 +485,10 @@ export function Contact() {
                 value={whatsapp}
                 onChange={handleWhatsAppChange}
                 required
+                aria-required="true"
+                autoComplete="tel"
               />
-              <PhoneIcon weight="regular" />
+              <PhoneIcon weight="regular" aria-hidden="true" />
             </div>
           </div>
 
@@ -487,10 +496,18 @@ export function Contact() {
             className="contact__container-form-consent"
             onClick={() => setConsent((prev) => !prev)}
           >
-            <div className={`contact__checkbox ${consent ? "checked" : ""}`}>
+            <input
+              type="checkbox"
+              id="consent"
+              checked={consent}
+              onChange={() => setConsent((prev) => !prev)}
+              className="sr-only"
+              aria-label="Concordo com a política de privacidade, termos de uso e política de cookies"
+            />
+            <div className={`contact__checkbox ${consent ? "checked" : ""}`} aria-hidden="true">
               <CheckIcon weight="bold" />
             </div>
-            <label>
+            <label htmlFor="consent">
               Ao selecionar esse campo, você declara que concorda com a nossa{" "}
               <Link
                 href="/politica-de-privacidade"
