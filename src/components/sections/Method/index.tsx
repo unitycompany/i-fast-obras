@@ -183,7 +183,7 @@ export function Method() {
           Com uma estratégia validada, e uma equipe super organizada, conseguimos garantir o melhor para a sua empresa
         </Text>
         <div className="method__container-texts-actions">
-          <Button variant="dark" className="method__container-texts-action-button-contact">
+          <Button variant="dark" className="method__container-texts-action-button-contact" onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}>
             <TextReveal>Orçamento</TextReveal>
           </Button>
         </div>
@@ -198,6 +198,7 @@ export function Method() {
                 description={item.description}
                 normas={item.normas}
                 textButton={item.textButton}
+                onButtonClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
                 variant={item.variant}
               />
             ))

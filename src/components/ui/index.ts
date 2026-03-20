@@ -4,4 +4,4 @@ export { OptimizedImage } from './OptimizedImage';
 export { Button } from './Button';
 export { Badge } from './Badge';
 export { VideoBackground } from './VideoBackground';
-export { PageTransition, usePageTransition } from './PageTransition';
+export { PageTransition, usePageTransition, PageTransitionProvider } from './PageTransition';

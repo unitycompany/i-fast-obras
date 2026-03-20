@@ -126,6 +126,7 @@ interface CardProps {
     title: ReactNode;
     description: ReactNode;
     textButton?: string;
+    onButtonClick?: () => void;
     variant?: CardVariant;
 }
 
@@ -136,6 +137,7 @@ export default function Card({
     title,
     description,
     textButton,
+    onButtonClick,
     variant = "default"
 }: CardProps) {
     const cardRef = useRef<HTMLDivElement>(null);
@@ -306,7 +308,7 @@ export default function Card({
                     {description}
                 </Text>
                 {textButton && (
-                    <Button variant="dark" className="card__content-button">
+                    <Button variant="dark" className="card__content-button" onClick={onButtonClick}>
                         <TextReveal>{textButton}</TextReveal>
                     </Button>
                 )}

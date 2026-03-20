@@ -182,10 +182,10 @@ export function Hero() {
             Somos a <strong>maior</strong> construtora com aço do <strong>Brasil</strong>
           </Text>
           <div className="hero__container-texts-actions">
-            <Button variant="light" className="hero__container-texts-action-button-contact">
+            <Button variant="light" className="hero__container-texts-action-button-contact" onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}>
               <TextReveal>Orçamento</TextReveal>
             </Button>
-            <Button variant="ghostLight" className="hero__container-texts-action-button-contact">
+            <Button variant="ghostLight" className="hero__container-texts-action-button-contact" onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}>
               <TextReveal>Saber mais</TextReveal>
             </Button>
           </div>

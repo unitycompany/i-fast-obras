@@ -493,17 +493,24 @@ export function Contact() {
             <label>
               Ao selecionar esse campo, você declara que concorda com a nossa{" "}
               <Link
-                href="/privacy-policy"
+                href="/politica-de-privacidade"
                 onClick={(e) => e.stopPropagation()}
               >
                 política de privacidade
               </Link>
-              , e{" "}
+              ,{" "}
               <Link
-                href="/terms-and-conditions"
+                href="/termos-e-condicoes"
                 onClick={(e) => e.stopPropagation()}
               >
                 termos de uso
+              </Link>
+              {" "}e{" "}
+              <Link
+                href="/politica-de-cookies"
+                onClick={(e) => e.stopPropagation()}
+              >
+                política de cookies
               </Link>
               .
             </label>

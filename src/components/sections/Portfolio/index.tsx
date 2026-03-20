@@ -734,7 +734,7 @@ export function Portfolio() {
               Com uma estratégia validada, e uma equipe super organizada, conseguimos garantir o melhor para a sua empresa
             </Text>
             <div className="portfolio__container-texts-body-actions">
-              <Button variant="dark" className="portfolio__container-texts-body-action-button-contact">
+              <Button variant="dark" className="portfolio__container-texts-body-action-button-contact" onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}>
                 <TextReveal>Orçamento</TextReveal>
               </Button>
             </div>
@@ -844,7 +844,7 @@ export function Portfolio() {
               </button>
               <span className="gallery__counter">
                 {galleryIndex + 1} / {galleryImages.length}
-              </span>
+              </span> 
               <button
                 className="gallery__nav-btn"
                 disabled={galleryIndex === galleryImages.length - 1}

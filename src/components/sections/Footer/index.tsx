@@ -2,10 +2,10 @@
 
 import styled from "@emotion/styled";
 import gsap from "gsap";
-import { useRef, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { useRef, useEffect, useCallback } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { theme } from "@/styles/theme";
-import { Badge, Button, Text, TextReveal, VideoBackground } from "@/components/ui";
+import { Badge, Button, Text, TextReveal, VideoBackground, usePageTransition } from "@/components/ui";
 import { FacebookLogoIcon, InstagramLogoIcon, TimerIcon, WhatsappLogoIcon } from "@phosphor-icons/react";
 
 const FooterContainer = styled.footer`
@@ -321,18 +321,25 @@ const FooterContainer = styled.footer`
 `;
 
 const siteMap = [
-  { name: "Início", href: "/" },
-  { name: "Serviços", href: "/servicos" },
-  { name: "Sobre nós", href: "/sobre-nos" },
-  { name: "Portfólio", href: "/portfolio" },
-  { name: "Contato", href: "/contato" },
+  { name: "Início", href: "#inicio" },
+  { name: "Método", href: "#metodo" },
+  { name: "Portfólio", href: "#portfolio" },
+  { name: "Etapas", href: "#etapas" },
+  { name: "Contato", href: "#contato" },
 ];
 
 export function Footer() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { navigateWithTransition } = usePageTransition();
   const contentRef = useRef<HTMLDivElement>(null);
   const listsRef = useRef<HTMLOListElement[]>([]);
   const policiesRef = useRef<HTMLDivElement>(null);
+
+  const scrollToSection = useCallback((id: string) => {
+    const el = document.querySelector(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }, []);
 
   useEffect(() => {
     const lists = listsRef.current.filter(Boolean);
@@ -388,10 +395,10 @@ export function Footer() {
           A <strong>solução</strong> ideal que a sua obra precisava
         </Text>
         <div className="footer__container-texts-actions">
-          <Button variant="light" className="footer__container-texts-action-button-contact">
+          <Button variant="light" className="footer__container-texts-action-button-contact" onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}>
             <TextReveal>Orçamento</TextReveal>
           </Button>
-          <Button variant="ghostLight" className="footer__container-texts-action-button-contact">
+          <Button variant="ghostLight" className="footer__container-texts-action-button-contact" onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}>
             <TextReveal>Saber mais</TextReveal>
           </Button>
         </div>
@@ -401,17 +408,17 @@ export function Footer() {
         <div className="footer__content-options"> 
           <ol className="footer__content-options-list" ref={(el) => { if (el) listsRef.current[0] = el; }}>
             <Text as="h6" className="footer__content-options-list-title">Serviços</Text>
-            <li><TextReveal><Text as="span" className="footer__content-options-list-item">Contrução Comercial</Text></TextReveal></li>
-            <li><TextReveal><Text as="span" className="footer__content-options-list-item">Projeto Comercial</Text></TextReveal></li>
+            <li onClick={() => scrollToSection('#metodo')}><TextReveal><Text as="span" className="footer__content-options-list-item">Construção Comercial</Text></TextReveal></li>
+            <li onClick={() => scrollToSection('#metodo')}><TextReveal><Text as="span" className="footer__content-options-list-item">Projeto Comercial</Text></TextReveal></li>
           </ol>
           <ol className="footer__content-options-list" ref={(el) => { if (el) listsRef.current[1] = el; }}>
             <Text as="h6" className="footer__content-options-list-title">Mapa do site</Text>
             {siteMap.map((item) => (
-              <li key={item.href}>
+              <li key={item.href} onClick={() => scrollToSection(item.href)} style={{ cursor: 'pointer' }}>
                 <TextReveal>
                   <Text
                     as="span"
-                    className={`footer__content-options-list-item${pathname === item.href ? " footer__content-options-list-item--active" : ""}`}
+                    className="footer__content-options-list-item"
                   >
                     {item.name}
                   </Text>
@@ -421,10 +428,10 @@ export function Footer() {
           </ol> 
           <ol className="footer__content-options-list" ref={(el) => { if (el) listsRef.current[2] = el; }}>
             <Text as="h6" className="footer__content-options-list-title">Contato</Text>
-            <li><TextReveal><Text as="span" className="footer__content-options-list-item">+55 (24) 99288-2282</Text></TextReveal></li>
-            <li><TextReveal><Text as="span" className="footer__content-options-list-item">WhatsApp</Text></TextReveal></li>
-            <li><TextReveal><Text as="span" className="footer__content-options-list-item">Instagram</Text></TextReveal></li>
-            <li><TextReveal><Text as="span" className="footer__content-options-list-item">E-mail</Text></TextReveal></li>
+            <li><TextReveal><a href="tel:+5524992882282" style={{ textDecoration: 'none', color: 'inherit' }}><Text as="span" className="footer__content-options-list-item">+55 (24) 99288-2282</Text></a></TextReveal></li>
+            <li><TextReveal><a href="https://wa.me/5524992882282" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}><Text as="span" className="footer__content-options-list-item">WhatsApp</Text></a></TextReveal></li>
+            <li><TextReveal><a href="https://instagram.com/fastobrasbr" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}><Text as="span" className="footer__content-options-list-item">Instagram</Text></a></TextReveal></li>
+            <li onClick={() => scrollToSection('#contato')} style={{ cursor: 'pointer' }}><TextReveal><Text as="span" className="footer__content-options-list-item">E-mail</Text></TextReveal></li>
           </ol> 
           <ol className="footer__content-options-list" ref={(el) => { if (el) listsRef.current[3] = el; }}>
             <Text as="h6" className="footer__content-options-list-title">Localização</Text>
@@ -437,21 +444,27 @@ export function Footer() {
               <strong>© 2026 Fast Obras.</strong> Todos os direitos reservados.
             </Text>
             <ul className="footer__content-policies-infos-links">
-              <li><TextReveal><Text as="span" className="footer__content-policies-infos-links-link">Política de Privacidade</Text></TextReveal></li>
-              <li><TextReveal><Text as="span" className="footer__content-policies-infos-links-link">Termos de Uso</Text></TextReveal></li>
-              <li><TextReveal><Text as="span" className="footer__content-policies-infos-links-link">Cookies</Text></TextReveal></li>
+              <li onClick={() => navigateWithTransition('/politica-de-privacidade')} style={{ cursor: 'pointer' }}><TextReveal><Text as="span" className="footer__content-policies-infos-links-link">Política de Privacidade</Text></TextReveal></li>
+              <li onClick={() => navigateWithTransition('/termos-e-condicoes')} style={{ cursor: 'pointer' }}><TextReveal><Text as="span" className="footer__content-policies-infos-links-link">Termos de Uso</Text></TextReveal></li>
+              <li onClick={() => navigateWithTransition('/politica-de-cookies')} style={{ cursor: 'pointer' }}><TextReveal><Text as="span" className="footer__content-policies-infos-links-link">Cookies</Text></TextReveal></li>
             </ul>
           </article>
           <div className="footer__content-policies-socials">
             <ul className="footer__content-policies-socials-links">
               <li className="footer__content-policies-socials-links-link">
-                <InstagramLogoIcon weight="light" />
+                <a href="https://instagram.com/fastobras" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', display: 'flex' }}>
+                  <InstagramLogoIcon weight="light" />
+                </a>
               </li>
               <li className="footer__content-policies-socials-links-link">
-                <FacebookLogoIcon weight="light" />
+                <a href="https://facebook.com/fastobras" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', display: 'flex' }}>
+                  <FacebookLogoIcon weight="light" />
+                </a>
               </li>
               <li className="footer__content-policies-socials-links-link">
-                <WhatsappLogoIcon weight="light" />
+                <a href="https://wa.me/5524992882282" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', display: 'flex' }}>
+                  <WhatsappLogoIcon weight="light" />
+                </a>
               </li>
             </ul>
           </div>

@@ -540,6 +540,7 @@ export function Steps() {
             <Button
               variant="light"
               className="step__container-texts-action-button-contact"
+              onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
             >
               <TextReveal>Orçamento</TextReveal>
             </Button>
@@ -583,7 +584,7 @@ export function Steps() {
               </StepItem>
             ))}
             <StepCTA>
-              <Button variant="light">
+              <Button variant="light" onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}>
                 <TextReveal>Solicitar orçamento</TextReveal>
               </Button>
             </StepCTA>

@@ -610,7 +610,7 @@ export function Header() {
             <Text as="p" className="sidebar__container-adress-text">
               Avenida Roberto Silveira, 251 - Centro, Miguel Pereira - RJ, CEP 26900-000
             </Text>
-            <button>
+            <button onClick={() => { toggle(); setTimeout(() => scrollToSection('#contato'), 600); }}>
               <TextReveal>
                 <Text as='span' className="sidebar__container-adress-button">
                   Entrar em contato

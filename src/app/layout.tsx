@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Instrument_Sans, Lora, Chakra_Petch } from 'next/font/google';
 import Script from 'next/script';
+import { SmoothScroll } from '@/components/SmoothScroll';
+import { PageTransitionProvider } from '@/components/ui';
 import '@/styles/global.css';
 
 const instrumentSans = Instrument_Sans({
@@ -136,7 +138,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
-        {children}
+        <PageTransitionProvider>
+          <SmoothScroll>{children}</SmoothScroll>
+        </PageTransitionProvider>
       </body>
     </html>
   );

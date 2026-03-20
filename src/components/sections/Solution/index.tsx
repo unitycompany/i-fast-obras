@@ -641,7 +641,7 @@ export function Solution() {
 
         <div className="solution__container-grid-item solution__container-grid-item--8" />
 
-        <div className="solution__container-grid-item solution__container-grid-item--9 text-reveal-trigger">
+        <div className="solution__container-grid-item solution__container-grid-item--9 text-reveal-trigger" onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}>
           <TextReveal>Solucionar meu problema</TextReveal>
           <ArrowRightIcon weight="light" />
         </div>
